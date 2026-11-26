@@ -689,6 +689,144 @@ input {
   font-variant-numeric: tabular-nums;
 }
 
+.prism-cell {
+  fill: rgba(255, 255, 255, 0.025);
+  stroke: rgba(243, 236, 226, 0.22);
+  stroke-width: 0.018;
+  vector-effect: non-scaling-stroke;
+}
+
+.prism-grid-border {
+  fill: none;
+  stroke: rgba(243, 236, 226, 0.62);
+  stroke-width: 1.5;
+  pointer-events: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.prism-mirror-control {
+  cursor: pointer;
+  outline: none;
+}
+
+.prism-mirror-control:focus-visible .prism-mirror-tile {
+  stroke: #fff;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.prism-mirror-tile {
+  fill: rgba(177, 130, 224, 0.12);
+  stroke: rgba(177, 130, 224, 0.42);
+  stroke-width: 0.018;
+  vector-effect: non-scaling-stroke;
+}
+
+.prism-mirror {
+  stroke: #d7b6ff;
+  stroke-width: 0.09;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 0.04px rgba(215, 182, 255, 0.8));
+  pointer-events: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.prism-beam {
+  fill: none;
+  stroke: #8feaff;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 5px rgba(95, 220, 255, 0.8));
+  pointer-events: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.prism-beam.reached {
+  stroke: #b6ff8e;
+  filter: drop-shadow(0 0 6px rgba(150, 255, 110, 0.95));
+}
+
+.prism-source {
+  fill: #8feaff;
+  stroke: #fff;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.prism-target {
+  fill: #101113;
+  stroke: #f3ece2;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.prism-target.lit {
+  fill: #b6ff8e;
+  stroke: #fff;
+  filter: drop-shadow(0 0 7px rgba(150, 255, 110, 0.95));
+}
+
+.pillar-lane {
+  fill: rgba(255, 255, 255, 0.018);
+  stroke: rgba(243, 236, 226, 0.22);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.pillar-ground {
+  stroke: rgba(243, 236, 226, 0.8);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.pillar-block {
+  fill: #77a75b;
+  stroke: rgba(243, 236, 226, 0.8);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.pillar-block.top {
+  fill: #b0bf67;
+}
+
+.pillar-block.moving {
+  fill: #edc95c;
+  filter: drop-shadow(0 0 5px rgba(237, 201, 92, 0.55));
+}
+
+.pillar-block.failed {
+  fill: #c8574a;
+  stroke: #ffb0a7;
+}
+
+.pillar-status {
+  position: absolute;
+  z-index: 4;
+  right: 20px;
+  bottom: 76px;
+  left: 20px;
+  margin: 0;
+  color: rgba(243, 236, 226, 0.72);
+  font-size: 11px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.prism-status {
+  position: absolute;
+  z-index: 4;
+  right: 20px;
+  bottom: 76px;
+  left: 20px;
+  margin: 0;
+  color: rgba(243, 236, 226, 0.72);
+  font-size: 11px;
+  text-align: center;
+  pointer-events: none;
+}
+
 .game-hint {
   margin: 0;
   color: var(--muted);

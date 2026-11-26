@@ -16,6 +16,8 @@ import MiddleGame from "./middle-game";
 import MinesGame from "./mines-game";
 import NumberLineGame from "./number-line-game";
 import PerimeterGame from "./perimeter-game";
+import PillarGame from "./pillar-game";
+import PrismaticGame from "./prismatic-game";
 import ReactionGame from "./reaction-game";
 import ScrambleGame from "./scramble-game";
 import SonarGame from "./sonar-game";
@@ -53,4 +55,6 @@ export const GAME_COMPONENTS: Record<AnyGameType, ComponentType<GameProps>> = {
   reaction: ReactionGame,
   convergence: ConvergenceGame,
   hovercraft: HovercraftGame,
+  prismatic: PrismaticGame,
+  pillar: PillarGame,
 };

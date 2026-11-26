@@ -21,7 +21,9 @@ export type GameType =
   | "unfold"
   | "reaction"
   | "convergence"
-  | "hovercraft";
+  | "hovercraft"
+  | "prismatic"
+  | "pillar";
 
 export type GameDefinition = {
   type: GameType;
@@ -63,6 +65,8 @@ export const GAME_POOL: GameDefinition[] = [
   { type: "reaction", name: "Reaction" },
   { type: "convergence", name: "Convergence" },
   { type: "hovercraft", name: "Hovercraft" },
+  { type: "prismatic", name: "Prismatic" },
+  { type: "pillar", name: "PILLAR" },
 ];
 
 export const FINALE_GAME: GameDefinition = {

@@ -1,6 +1,7 @@
 "use client";
 
 import type { CSSProperties } from "react";
+import { Play } from "lucide-react";
 import { formatPoints, type GameType } from "@/lib/skillion";
 import { GAME_INFO } from "./game-info";
 
@@ -92,7 +93,7 @@ export function GameIntro({
 
         <button type="button" className="stage-start" onClick={onStart} aria-label={`Start ${name}`} autoFocus>
           <span>PLAY</span>
-          <span className="stage-start-arrow" aria-hidden="true">▶</span>
+          <span className="stage-start-arrow" aria-hidden="true"><Play size={14} fill="currentColor" /></span>
         </button>
       </div>
     </div>

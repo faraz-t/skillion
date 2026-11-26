@@ -74,4 +74,10 @@ export const GAME_INFO: Record<GameType, GameInfo> = {
   hovercraft: {
     how: "You fly sideways at a steady speed and bounce off the walls. Tap to hop and grab as many yellow dots as you can before time runs out.",
   },
+  prismatic: {
+    how: "Rotate the mirrors to guide a beam through the grid and into the target.",
+  },
+  pillar: {
+    how: "Drop the sliding row onto the tower. Overhangs are cut away, making each next drop harder.",
+  },
 };
