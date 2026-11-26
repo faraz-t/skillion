@@ -113,7 +113,8 @@ export default function SkillionGame() {
       ? !cells[25] && cells.slice(0, 25).every(Boolean) && isUnlocked(5)
       : !cells[index] && isUnlocked(rowOf(index));
   const finaleComplete = Boolean(cells[25]);
-  const shareAvailable = finaleComplete || cells.slice(0, 25).every(Boolean);
+  const allSkillGamesComplete = cells.slice(0, 25).every(Boolean);
+  const shareAvailable = finaleComplete || (allSkillGamesComplete && !isUnlocked(5));
 
   const resetProgress = () => {
     if (resetTimer.current !== null) window.clearTimeout(resetTimer.current);

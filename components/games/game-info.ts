@@ -81,6 +81,6 @@ export const GAME_INFO: Record<GameType, GameInfo> = {
     how: "Drop the sliding row onto the tower. Overhangs are cut away, so land in the center to keep your full width.",
   },
   luck: {
-    how: "You have passed 25 tests of skill.\n\nNow, it is time for the ultimate test",
+    how: "You have passed 25 tests of SKILL.\n\nNow, it is time for the ultimate test...\n\nLUCK.",
   },
 };

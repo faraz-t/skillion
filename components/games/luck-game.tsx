@@ -117,6 +117,7 @@ export default function LuckGame({ maxPoints: initial, seed, onComplete }: GameP
   const [storageError, setStorageError] = useState("");
   const angleRef = useRef(0);
   const spinTimer = useRef<number | null>(null);
+  const pendingSaved = useRef<Saved | null>(null);
 
   useEffect(() => {
     const timeout = window.setTimeout(() => {
@@ -137,19 +138,18 @@ export default function LuckGame({ maxPoints: initial, seed, onComplete }: GameP
     return () => {
       window.clearTimeout(timeout);
       if (spinTimer.current !== null) window.clearTimeout(spinTimer.current);
+      pendingSaved.current = null;
     };
   }, [initial, storageKey]);
 
   const persist = (next: Saved) => {
     try {
       localStorage.setItem(storageKey, JSON.stringify(next));
-      setSaved(next);
-      return true;
     } catch (error) {
       console.error("Could not save LUCK progress.", error);
-      setStorageError("Your bet could not be saved, so it was not placed.");
-      return false;
+      setStorageError("Your points are updated for this session, but progress could not be saved.");
     }
+    setSaved(next);
   };
 
   const placeBet = (color: Color) => {
@@ -172,15 +172,20 @@ export default function LuckGame({ maxPoints: initial, seed, onComplete }: GameP
       last: { number, color: resultColor, bet, on: color, net },
     };
 
-    if (!persist(next)) return;
-
     const index = POCKETS.indexOf(number);
     const rotation = ((-(index + 0.5) * SLOT - (angleRef.current % 360)) % 360 + 360) % 360;
     const nextAngle = angleRef.current + 360 * 5 + rotation;
     angleRef.current = nextAngle;
+    pendingSaved.current = next;
     setSpinning(true);
     requestAnimationFrame(() => setSpinAngle(nextAngle));
-    spinTimer.current = window.setTimeout(() => setSpinning(false), SPIN_MS + 100);
+    spinTimer.current = window.setTimeout(() => {
+      const settled = pendingSaved.current;
+      pendingSaved.current = null;
+      spinTimer.current = null;
+      if (settled) persist(settled);
+      setSpinning(false);
+    }, SPIN_MS + 100);
   };
 
   const wheel = (
@@ -273,7 +278,7 @@ export default function LuckGame({ maxPoints: initial, seed, onComplete }: GameP
             : spinning
               ? "The wheel is spinning…"
               : last
-                ? `${last.number} ${COLOR_NAME[last.color]} | ${last.net >= 0 ? "+" : ""}${formatPoints(last.net)} points`
+                ? `[${last.number} ${COLOR_NAME[last.color]}] ${last.net >= 0 ? "+" : ""}${formatPoints(last.net)} points`
                 : "Choose a color to place your first bet."}
         </p>
         <button
