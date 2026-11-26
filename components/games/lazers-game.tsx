@@ -299,12 +299,10 @@ export default function LazersGame({ difficulty, seed, maxPoints, onComplete }: 
       </p>
       {board}
       {canSkip && phase === "running" && (
-        <div className="button-row single">
-          <button type="button" className="secondary-button" onClick={skipAfterMaxPoints}>
-            <FastForward size={16} aria-hidden="true" />
-            Skip
-          </button>
-        </div>
+        <button type="button" className="secondary-button lazers-skip-button" onClick={skipAfterMaxPoints}>
+          <FastForward size={16} aria-hidden="true" />
+          Skip
+        </button>
       )}
     </div>
   );

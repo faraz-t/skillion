@@ -1065,7 +1065,7 @@ input {
 
 /* ---- controls: a floating dock along the bottom edge ---- */
 
-.stage .game-content > :where(.primary-button, .input-pair, .chip-grid, .button-row, .guess-input, .game-hint) {
+.stage .game-content > :where(.primary-button, .input-pair, .chip-grid, .button-row, .guess-input, .game-hint, .lazers-skip-button) {
   position: relative;
   z-index: 3;
   flex: 1 1 100%;
@@ -1105,6 +1105,14 @@ input {
   background: #000;
   color: #fff;
   cursor: pointer;
+}
+
+.stage .lazers-skip-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
 }
 
 .stage .secondary-button:hover:not(:disabled),
