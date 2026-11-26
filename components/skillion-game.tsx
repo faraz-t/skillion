@@ -191,7 +191,8 @@ export default function SkillionGame() {
           <span className="brand-mark" aria-hidden="true">✶</span>
         </div>
         <div className="game-meta">
-          <span>Daily {seed}</span>
+          {/* <span>Daily {seed}</span> */}
+          <span>TESTING MODE</span>
           <span><strong>{formatPoints(total)}</strong> / 1,000,000</span>
         </div>
       </header>

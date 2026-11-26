@@ -491,6 +491,10 @@ input {
   padding: 5cqw 6cqw 6cqw;
 }
 
+.stage-body-finale .stage-start {
+  margin-top: auto;
+}
+
 .stage-copy {
   margin: 0;
   color: #f3ece2;
@@ -556,7 +560,7 @@ input {
 }
 
 .stage-fact-value.stage-pips {
-  gap: 3px;
+  gap: 6px;
 }
 
 .stage-pips em {

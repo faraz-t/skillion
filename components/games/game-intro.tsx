@@ -60,7 +60,7 @@ export function GameIntro({
         <h2 id="game-title" className="stage-title">{title}</h2>
       </div>
 
-      <div className="stage-body">
+      <div className={`stage-body${type === "luck" ? " stage-body-finale" : ""}`}>
         <p className="stage-copy">
           <svg className="stage-info-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" aria-hidden="true">
             <circle cx="10" cy="10" r="7.5" />
