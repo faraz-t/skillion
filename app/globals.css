@@ -117,7 +117,6 @@ input {
   text-underline-offset: 4px;
   white-space: nowrap;
   cursor: pointer;
-  transition: border-color 0.15s, color 0.15s, background 0.15s;
 }
 
 .reset-button:hover,
@@ -378,7 +377,6 @@ input {
   background: rgba(8, 8, 10, 0.72);
   backdrop-filter: blur(16px) saturate(1.1);
   -webkit-backdrop-filter: blur(16px) saturate(1.1);
-  animation: modal-fade 0.18s ease-out;
 }
 
 .stage {
@@ -404,15 +402,6 @@ input {
   color: #fff;
   font-family: var(--font-geist-sans), "Helvetica Neue", Arial, sans-serif;
   box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6);
-  animation: sheet-in 0.26s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-@keyframes modal-fade {
-  from { opacity: 0; }
-}
-
-@keyframes sheet-in {
-  from { opacity: 0; transform: translateY(14px) scale(0.985); }
 }
 
 /* ---- intro: gradient hero tile (like a grid tile) + ruled details + start bar ---- */
@@ -433,7 +422,6 @@ input {
   background: transparent;
   color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
-  transition: color 0.15s;
 }
 
 .stage-close:hover,
@@ -494,7 +482,6 @@ input {
   letter-spacing: -0.03em;
   white-space: nowrap;
   text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
-  animation: intro-rise 0.45s 0.08s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 .stage-body {
@@ -502,11 +489,6 @@ input {
   display: flex;
   flex-direction: column;
   padding: 5cqw 6cqw 6cqw;
-  animation: intro-rise 0.45s 0.16s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-}
-
-@keyframes intro-rise {
-  from { opacity: 0; transform: translateY(8px); }
 }
 
 .stage-copy {
@@ -517,6 +499,7 @@ input {
   line-height: 1.3;
   letter-spacing: -0.01em;
   text-wrap: pretty;
+  white-space: pre-line;
 }
 
 .stage-info-icon {
@@ -615,14 +598,12 @@ input {
   font-weight: 700;
   letter-spacing: 0.1em;
   cursor: pointer;
-  transition: background 0.15s, transform 0.1s;
 }
 
 .stage-start-arrow {
   font-size: 14px;
   line-height: 1;
   letter-spacing: 0;
-  transition: transform 0.15s;
 }
 
 .stage-start:hover,
@@ -631,12 +612,7 @@ input {
   outline: none;
 }
 
-.stage-start:hover .stage-start-arrow,
-.stage-start:focus-visible .stage-start-arrow {
-  transform: translateX(4px);
-}
 
-.stage-start:active { transform: translateY(1px); }
 
 /* ---- play area: board fills the card; prompt on top, controls at the bottom ---- */
 
@@ -805,6 +781,191 @@ input {
   stroke: var(--good);
 }
 
+/* ---- luck ---- */
+.luck-pocket {
+  stroke: rgba(243, 236, 226, 0.72);
+  stroke-width: 1;
+}
+
+.luck-pocket.red { fill: #a82f35; }
+.luck-pocket.black { fill: #19191b; }
+.luck-pocket.green { fill: #397443; }
+
+.luck-pocket-number {
+  fill: #fff;
+  font-size: 8px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.luck-wheel {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.luck-wheel.spinning {
+  transition: transform 4.2s cubic-bezier(0.12, 0.72, 0.12, 1);
+}
+
+.luck-hub {
+  fill: #0b0b0c;
+  stroke: rgba(243, 236, 226, 0.72);
+  stroke-width: 2;
+}
+
+.luck-hub-label {
+  fill: #f3ece2;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.luck-rim {
+  fill: none;
+  stroke: rgba(243, 236, 226, 0.9);
+  stroke-width: 2;
+  pointer-events: none;
+}
+
+.luck-pointer {
+  fill: #f3ece2;
+  stroke: #0b0b0c;
+  stroke-width: 1;
+}
+
+.luck-dashboard {
+  position: absolute;
+  z-index: 4;
+  top: 62px;
+  left: 16px;
+  right: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid rgba(243, 236, 226, 0.32);
+  border-bottom: 1px solid rgba(243, 236, 226, 0.32);
+  background: rgba(0, 0, 0, 0.72);
+  pointer-events: none;
+}
+
+.luck-dashboard > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 6px 8px;
+}
+
+.luck-dashboard > div + div {
+  border-left: 1px solid rgba(243, 236, 226, 0.24);
+}
+
+.luck-dashboard span {
+  color: rgba(243, 236, 226, 0.65);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.luck-dashboard strong {
+  overflow: hidden;
+  color: #f3ece2;
+  font-size: clamp(12px, 3.2cqw, 16px);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.luck-controls {
+  position: absolute;
+  z-index: 5;
+  right: 16px;
+  bottom: 14px;
+  left: 16px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 7px;
+}
+
+.luck-bet-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: rgba(243, 236, 226, 0.66);
+  font-size: 10px;
+}
+
+.luck-bet-input {
+  width: 58%;
+  height: 38px;
+  font-size: 16px;
+}
+
+.luck-color-bets {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+}
+
+.luck-color-bet {
+  min-width: 0;
+  min-height: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: 1px solid rgba(243, 236, 226, 0.5);
+  border-radius: 0;
+  color: #fff;
+  cursor: pointer;
+}
+
+.luck-color-bet.red { background: #8c252c; }
+.luck-color-bet.black { background: #19191b; }
+.luck-color-bet.green { background: #30643a; }
+
+.luck-color-bet span {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.luck-color-bet small {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 9px;
+}
+
+.luck-color-bet:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.luck-color-bet:not(:disabled):hover,
+.luck-color-bet:not(:disabled):focus-visible {
+  border-color: #fff;
+  filter: brightness(1.25);
+  outline: none;
+}
+
+.luck-last-result,
+.luck-error {
+  min-height: 14px;
+  margin: 0;
+  color: rgba(243, 236, 226, 0.72);
+  font-size: 10px;
+  text-align: center;
+}
+
+.luck-error {
+  color: #ff9a8f;
+}
+
+.luck-controls .primary-button {
+  min-height: 42px;
+}
+
 /* ---- pillar ---- */
 .pillar-lane {
   fill: rgba(255, 255, 255, 0.025);
@@ -918,7 +1079,6 @@ input {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  transition: background 0.15s, transform 0.1s, opacity 0.15s;
 }
 
 .stage .primary-button {
@@ -930,10 +1090,6 @@ input {
 .stage .primary-button:hover:not(:disabled),
 .stage .primary-button:focus-visible:not(:disabled) {
   background: #d7d2ca;
-}
-
-.stage .primary-button:active:not(:disabled) {
-  transform: translateY(1px);
 }
 
 .stage .primary-button:disabled {
@@ -1046,7 +1202,6 @@ input {
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   cursor: pointer;
-  transition: background 0.12s, color 0.12s, border-color 0.12s;
 }
 
 .chip:hover,
@@ -1188,6 +1343,16 @@ input {
   fill: rgba(243, 236, 226, 0.02);
   stroke: var(--foreground);
   stroke-width: 2;
+}
+
+.lazers-danger-margin {
+  fill: rgba(212, 88, 74, 0.3);
+  pointer-events: none;
+}
+
+.lazers-safe-area {
+  fill: rgba(243, 236, 226, 0.02);
+  pointer-events: none;
 }
 
 .lazer-arrow line {
@@ -1573,7 +1738,6 @@ input {
   flex-direction: column;
   justify-content: flex-end;
   padding: 0 16px 16px;
-  animation: sheet-in 0.25s ease-out;
 }
 
 .stage .game-result-card > .primary-button {
@@ -1635,8 +1799,6 @@ input {
 .result-meter i {
   display: block;
   height: 100%;
-  transform-origin: left;
-  animation: meter-grow 0.65s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .result-meter i.tone-good { background: var(--good); }
@@ -1819,15 +1981,7 @@ input {
   stroke-linecap: round;
 }
 
-@keyframes meter-grow {
-  from { transform: scaleX(0); }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .game-modal,
-  .stage,
-  .game-result-card,
-  .result-meter i,
   .tap-pulse,
   .head-pulse,
   .pulse-ring,

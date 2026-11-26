@@ -96,18 +96,22 @@ export default function MinesGame({ difficulty, seed, maxPoints, onComplete }: G
     dragging.current = false;
     if (boom) setBlast(boom);
     const traveled = Math.max(0, final.length - 1);
-    const totalDistance = Math.hypot(
-      layout.flag.r - layout.start.r,
-      layout.flag.c - layout.start.c,
-    );
+    const totalDistance =
+      Math.abs(layout.flag.r - layout.start.r) +
+      Math.abs(layout.flag.c - layout.start.c);
     const reachedFlag = same(final[final.length - 1], layout.flag);
-    const accuracy = reachedFlag ? 1 : Math.min(1, traveled / totalDistance);
+    const pointOfDeath = boom ?? final[final.length - 1];
+    const distanceToFlag =
+      Math.abs(layout.flag.r - pointOfDeath.r) +
+      Math.abs(layout.flag.c - pointOfDeath.c);
+    const accuracy = reachedFlag ? 1 : Math.max(0, 1 - distanceToFlag / totalDistance);
     const traveledText = `${traveled} ${traveled === 1 ? "tile" : "tiles"}`;
+    const distanceText = `${distanceToFlag} ${distanceToFlag === 1 ? "tile" : "tiles"}`;
     const detail = reachedFlag
       ? `You reached the flag after ${traveledText}.`
       : boom
-        ? `Boom! You traveled ${traveledText} before hitting a mine.`
-        : `You traveled ${traveledText} toward the flag.`;
+        ? `Boom! You were ${distanceText} from the flag when you hit a mine.`
+        : `You stopped ${distanceText} from the flag.`;
     timers.current.push(window.setTimeout(() => setResult({ accuracy, detail }), boom ? 900 : 450));
   };
 

@@ -11,6 +11,7 @@ import EchoGame from "./echo-game";
 import FillGame from "./fill-game";
 import HovercraftGame from "./hovercraft-game";
 import LandingGame from "./landing-game";
+import LuckGame from "./luck-game";
 import LazersGame from "./lazers-game";
 import MiddleGame from "./middle-game";
 import MinesGame from "./mines-game";
@@ -57,4 +58,5 @@ export const GAME_COMPONENTS: Record<AnyGameType, ComponentType<GameProps>> = {
   hovercraft: HovercraftGame,
   prismatic: PrismaticGame,
   pillar: PillarGame,
+  luck: LuckGame,
 };

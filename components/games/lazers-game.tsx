@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { FastForward } from "lucide-react";
 import { makeRng } from "@/lib/skillion";
 import { boardPoint, clamp, GameBoard } from "./game-board";
 import { GameResult } from "./game-result";
 import type { GameProps, Outcome, Point } from "./types";
 
 const BOX = { min: 48, max: 312 };
+const SAFE_MARGIN = 22;
+const SAFE_BOX = { min: BOX.min + SAFE_MARGIN, max: BOX.max - SAFE_MARGIN };
 
 type Laser = {
   position: Point;
@@ -58,6 +61,7 @@ function pointAtBoxEntry(source: Point, direction: Point): Point {
 }
 
 export default function LazersGame({ difficulty, seed, maxPoints, onComplete }: GameProps) {
+  const maxSurvival = 18 - difficulty * 1.5;
   const setup = useMemo(() => {
     const rng = makeRng(`${seed}:lazers:${difficulty}`);
     const count = 3 + difficulty + Math.floor(rng() * 2);
@@ -89,6 +93,7 @@ export default function LazersGame({ difficulty, seed, maxPoints, onComplete }: 
   const [laserPaths, setLaserPaths] = useState<Point[][]>([]);
   const [hit, setHit] = useState<Point | null>(null);
   const [result, setResult] = useState<Outcome | null>(null);
+  const [canSkip, setCanSkip] = useState(false);
   const lasersRef = useRef<Laser[]>([]);
   const cursorRef = useRef<Point | null>(null);
   const frameRef = useRef<number | null>(null);
@@ -119,9 +124,15 @@ export default function LazersGame({ difficulty, seed, maxPoints, onComplete }: 
     setLaserPaths(lasersRef.current.map((laser) => laser.path));
 
     let previous = performance.now();
+    let maxPointsReached = false;
     const tick = (now: number) => {
       const dt = Math.min(0.032, (now - previous) / 1000);
       previous = now;
+      const survived = (now - startedAt.current) / 1000;
+      if (!maxPointsReached && survived >= maxSurvival) {
+        maxPointsReached = true;
+        setCanSkip(true);
+      }
       let collision: Point | null = null;
 
       for (const laser of lasersRef.current) {
@@ -162,11 +173,10 @@ export default function LazersGame({ difficulty, seed, maxPoints, onComplete }: 
       setLaserPaths(lasersRef.current.map((laser) => [...laser.path, laser.position]));
 
       if (collision) {
-        const survived = (now - startedAt.current) / 1000;
         setPhase("done");
         setHit(collision);
         setResult({
-          accuracy: clamp(survived / (18 - difficulty * 1.5), 0, 1),
+          accuracy: clamp(survived / maxSurvival, 0, 1),
           detail: `You survived ${survived.toFixed(1)} seconds before getting hit.`,
         });
         return;
@@ -176,6 +186,16 @@ export default function LazersGame({ difficulty, seed, maxPoints, onComplete }: 
     frameRef.current = requestAnimationFrame(tick);
   };
 
+  const skipAfterMaxPoints = () => {
+    if (!canSkip || phase !== "running") return;
+    if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+    setPhase("done");
+    setResult({
+      accuracy: 1,
+      detail: `You survived ${maxSurvival.toFixed(1)} seconds and reached the maximum points.`,
+    });
+  };
+
   const board = (
     <GameBoard
       label="Lazer Tag"
@@ -183,11 +203,28 @@ export default function LazersGame({ difficulty, seed, maxPoints, onComplete }: 
         ? (event) => {
             event.currentTarget.setPointerCapture(event.pointerId);
             const point = boardPoint(event.currentTarget, event);
-            if (point.x < BOX.min || point.x > BOX.max || point.y < BOX.min || point.y > BOX.max) return;
-            begin({ x: clamp(point.x, BOX.min, BOX.max), y: clamp(point.y, BOX.min, BOX.max) });
+            if (
+              point.x < SAFE_BOX.min || point.x > SAFE_BOX.max ||
+              point.y < SAFE_BOX.min || point.y > SAFE_BOX.max
+            ) return;
+            begin({ x: clamp(point.x, SAFE_BOX.min, SAFE_BOX.max), y: clamp(point.y, SAFE_BOX.min, SAFE_BOX.max) });
           }
         : undefined}
     >
+      <rect
+        x={BOX.min + 1}
+        y={BOX.min + 1}
+        width={BOX.max - BOX.min - 2}
+        height={BOX.max - BOX.min - 2}
+        className="lazers-danger-margin"
+      />
+      <rect
+        x={SAFE_BOX.min}
+        y={SAFE_BOX.min}
+        width={SAFE_BOX.max - SAFE_BOX.min}
+        height={SAFE_BOX.max - SAFE_BOX.min}
+        className="lazers-safe-area"
+      />
       <rect x={BOX.min} y={BOX.min} width={BOX.max - BOX.min} height={BOX.max - BOX.min} className="lazers-box" />
 
       {phase === "ready" && setup.arrows.map((arrow, index) => {
@@ -255,10 +292,20 @@ export default function LazersGame({ difficulty, seed, maxPoints, onComplete }: 
     <div className="game-content">
       <p className="game-prompt">
         {phase === "ready"
-          ? <>Click inside the <strong>box</strong> to place your cursor and begin.</>
-          : <>Good luck!</>}
+          ? <>Click inside the inner box to begin. The red margin is off-limits.</>
+          : canSkip
+            ? <>Maximum points reached. Skip when you’re ready.</>
+            : <>Good luck!</>}
       </p>
       {board}
+      {canSkip && phase === "running" && (
+        <div className="button-row single">
+          <button type="button" className="secondary-button" onClick={skipAfterMaxPoints}>
+            <FastForward size={16} aria-hidden="true" />
+            Skip
+          </button>
+        </div>
+      )}
     </div>
   );
 }

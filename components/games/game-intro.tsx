@@ -69,29 +69,31 @@ export function GameIntro({
           {info.how}
         </p>
 
-        <div className="stage-facts">
-          <div>
-            <span className="stage-fact-label">Max Points</span>
-            <span className="stage-fact-value">{formatPoints(maxPoints)}</span>
-          </div>
-          <div>
-            {row < 5 ? (
-              <span className="stage-fact-value stage-pips" aria-label={`Row ${row + 1} of 5`}>
-                <span className="pips" aria-hidden="true">
-                  {ROW_COLORS.slice(0, 5).map((c, i) => (
-                    <b key={c} className={i <= row ? "on" : ""} style={{ "--pip": c } as CSSProperties} />
-                  ))}
+        {type !== "luck" && (
+          <div className="stage-facts">
+            <div>
+              <span className="stage-fact-label">Max Points</span>
+              <span className="stage-fact-value">{formatPoints(maxPoints)}</span>
+            </div>
+            <div>
+              {row < 5 ? (
+                <span className="stage-fact-value stage-pips" aria-label={`Row ${row + 1} of 5`}>
+                  <span className="pips" aria-hidden="true">
+                    {ROW_COLORS.slice(0, 5).map((c, i) => (
+                      <b key={c} className={i <= row ? "on" : ""} style={{ "--pip": c } as CSSProperties} />
+                    ))}
+                  </span>
+                  <em>Row {row + 1}</em>
                 </span>
-                <em>Row {row + 1}</em>
-              </span>
-            ) : (
-              <>
-                <span className="stage-fact-label">Stage</span>
-                <span className="stage-fact-value">Finale</span>
-              </>
-            )}
+              ) : (
+                <>
+                  <span className="stage-fact-label">Stage</span>
+                  <span className="stage-fact-value">Finale</span>
+                </>
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         <button type="button" className="stage-start" onClick={onStart} aria-label={`Start ${name}`} autoFocus>
           <span>PLAY</span>

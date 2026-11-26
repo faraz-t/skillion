@@ -48,7 +48,7 @@ export default function TimerGame({ difficulty, seed, maxPoints, onComplete }: G
   const running = startedAt !== null && !result;
   const board = (
     <GameBoard label="Stopwatch" onPointerDown={running ? handleAction : undefined}>
-      <circle cx="180" cy="180" r="135" className={`board-guide${running ? " pulse-ring" : ""}`} />
+      <circle cx="180" cy="180" r="135" className="board-guide" />
       <text x="180" y="200" textAnchor="middle" className="board-question" style={{ opacity: displayOpacity }}>{display}</text>
       {result && (
         <text x="180" y="248" textAnchor="middle" className="board-label" fontSize="18">TARGET {targetTime.toFixed(1)} s</text>

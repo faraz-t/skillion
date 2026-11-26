@@ -75,7 +75,7 @@ export default function SkillionGame() {
   // Starting from the intro screen also presses the game's own "start" button (Show the dots,
   // Spin, Launch…), so the player doesn't have to press start twice.
   useEffect(() => {
-    if (!playing) return;
+    if (!playing || activeIndex === 25) return;
     const frame = requestAnimationFrame(() => {
       stageRef.current?.querySelector<HTMLButtonElement>("[data-start]")?.click();
     });
@@ -105,10 +105,15 @@ export default function SkillionGame() {
     return () => window.clearTimeout(timeout);
   }, [runSeed, storageKey]);
 
-  const total = cells.reduce((sum, cell) => sum + (cell?.points ?? 0), 0);
-  const isUnlocked = (row: number) => total >= UNLOCK_THRESHOLDS[row];
-  const isOpen = (index: number) => !cells[index] && isUnlocked(rowOf(index));
-  const complete = !cells.some((cell, index) => !cell && isOpen(index));
+  const skillPoints = cells.slice(0, 25).reduce((sum, cell) => sum + (cell?.points ?? 0), 0);
+  const total = cells[25]?.points ?? skillPoints;
+  const isUnlocked = (row: number) => skillPoints >= UNLOCK_THRESHOLDS[row];
+  const isOpen = (index: number) =>
+    index === 25
+      ? !cells[25] && cells.slice(0, 25).every(Boolean) && isUnlocked(5)
+      : !cells[index] && isUnlocked(rowOf(index));
+  const finaleComplete = Boolean(cells[25]);
+  const shareAvailable = finaleComplete || cells.slice(0, 25).every(Boolean);
 
   const resetProgress = () => {
     if (resetTimer.current !== null) window.clearTimeout(resetTimer.current);
@@ -146,6 +151,18 @@ export default function SkillionGame() {
     setActiveIndex(null);
   };
 
+  const saveFinalScore = (points: number) => {
+    const next = [...cells];
+    next[25] = { points, accuracy: skillPoints > 0 ? Math.min(points / skillPoints, 1) : 0 };
+    setCells(next);
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(next));
+    } catch {
+      // The final score remains visible in memory if browser storage is unavailable.
+    }
+    setActiveIndex(null);
+  };
+
   const activeGame: GameDefinition | null =
     activeIndex === null
       ? null
@@ -161,7 +178,7 @@ export default function SkillionGame() {
       if (cell.accuracy >= 0.45) return "🟨";
       return "🟥";
     }).join("")
-  ).join("\n")}\n${formatPoints(total)} / 1,000,000`;
+  ).join("\n")}${finaleComplete ? "\n⭐⭐⭐⭐⭐" : ""}\n${formatPoints(total)} / 1,000,000`;
 
   const ActiveGameComponent = activeGame ? GAME_COMPONENTS[activeGame.type as AnyGameType] : null;
 
@@ -179,7 +196,7 @@ export default function SkillionGame() {
         </div>
       </header>
 
-      {complete && (
+      {shareAvailable && (
         <section className="game-end" aria-live="polite">
           <pre className="share-result">{shareText}</pre>
           <button
@@ -240,7 +257,7 @@ export default function SkillionGame() {
                       disabled={!open}
                       onClick={() => openGame(25)}
                     >
-                      <span className="tile-name">{FINALE_GAME.name}</span>
+                      <span className="tile-name">{result ? FINALE_GAME.name : "???"}</span>
                     </button>
                   );
                 })()}
@@ -276,8 +293,11 @@ export default function SkillionGame() {
                   key={`${runSeed}:cell-${activeIndex}`}
                   difficulty={difficultyOf(activeIndex)}
                   seed={`${runSeed}:cell-${activeIndex}`}
-                  maxPoints={maxOf(activeIndex)}
-                  onComplete={(accuracy) => saveResult(activeIndex, accuracy)}
+                  maxPoints={activeIndex === 25 ? skillPoints : maxOf(activeIndex)}
+                  onComplete={(value) => {
+                    if (activeIndex === 25) saveFinalScore(value);
+                    else saveResult(activeIndex, value);
+                  }}
                 />
               </>
             ) : (

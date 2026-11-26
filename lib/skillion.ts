@@ -23,7 +23,8 @@ export type GameType =
   | "convergence"
   | "hovercraft"
   | "prismatic"
-  | "pillar";
+  | "pillar"
+  | "luck";
 
 export type GameDefinition = {
   type: GameType;
@@ -70,8 +71,8 @@ export const GAME_POOL: GameDefinition[] = [
 ];
 
 export const FINALE_GAME: GameDefinition = {
-  type: "number-line",
-  name: "???",
+  type: "luck",
+  name: "LUCK",
 };
 
 export function hashSeed(seed: string): number {
