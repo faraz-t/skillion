@@ -46,7 +46,7 @@ export const GAME_POOL: GameDefinition[] = [
   { type: "count", name: "Count" },
   { type: "pizza", name: "Pizza" },
   { type: "split", name: "Split" },
-  { type: "timer", name: "Stopwatch" },
+  { type: "timer", name: "STOPWATCH" },
   { type: "middle", name: "Gravity" },
   { type: "number-line", name: "Number line" },
   { type: "mines", name: "Minefield" },

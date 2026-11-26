@@ -132,7 +132,7 @@ export default function PillarGame({ difficulty, maxPoints, onComplete }: GamePr
     setResult({
       accuracy,
       detail: won
-        ? `You reached the top with a ${width.toFixed(2)}-block-wide tower.${perfects}`
+        ? `You reached the top with a ${width.toFixed(2)} block wide tower.`
         : `The tower fell at height ${height}. Its top row was ${width.toFixed(2)} blocks wide.${perfects}`,
     });
     redraw();

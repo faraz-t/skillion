@@ -179,7 +179,7 @@ export default function SkillionGame() {
       if (cell.accuracy >= 0.45) return "🟨";
       return "🟥";
     }).join("")
-  ).join("\n")}${finaleComplete ? "\n⭐⭐⭐⭐⭐" : ""}\n${formatPoints(total)} / 1,000,000`;
+  ).join("\n")}\n${finaleComplete ? "⭐⭐⭐⭐⭐" : "◻️◻️◻️◻️◻️"}\n${formatPoints(total)} / 1,000,000`;
 
   const ActiveGameComponent = activeGame ? GAME_COMPONENTS[activeGame.type as AnyGameType] : null;
 

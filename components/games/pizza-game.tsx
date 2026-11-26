@@ -80,11 +80,6 @@ export default function PizzaGame({ difficulty, seed, maxPoints, onComplete }: G
         <clipPath id="pizza-visible-slice">
           <path d={wedgePath(slice)} />
         </clipPath>
-        {result && (
-          <clipPath id="pizza-answer-slice">
-            <path d={wedgePath(puzzle.target)} />
-          </clipPath>
-        )}
       </defs>
       <g clipPath="url(#pizza-visible-slice)">
         <image
@@ -105,22 +100,18 @@ export default function PizzaGame({ difficulty, seed, maxPoints, onComplete }: G
         className="pizza-cut"
       />
       {result && (
-        <g>
-          <g clipPath="url(#pizza-answer-slice)">
-            <image
-              href="/pizza.png"
-              x="0"
-              y="0"
-              width="360"
-              height="360"
-              preserveAspectRatio="xMidYMid meet"
-              className="pizza-answer"
-            />
-          </g>
+        <>
+          <line
+            x1={CENTER.x}
+            y1={CENTER.y}
+            x2={polar(puzzle.target).x}
+            y2={polar(puzzle.target).y}
+            className="pizza-target-line"
+          />
           <text x="180" y="326" textAnchor="middle" className="board-label" fontSize="13">
             TARGET {puzzle.target}°
           </text>
-        </g>
+        </>
       )}
     </GameBoard>
   );

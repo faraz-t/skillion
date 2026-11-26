@@ -32,7 +32,6 @@ type Sim = {
 export default function HovercraftGame({ difficulty, seed, maxPoints, onComplete }: GameProps) {
   const speed = 125 + difficulty * 18;
   const total = 14 + difficulty * 2;
-  const target = Math.ceil(total * 0.75); // collecting this many counts as a full score
 
   const dots = useMemo<Point[]>(() => {
     const rng = makeRng(`${seed}:hover:${difficulty}`);
@@ -94,7 +93,7 @@ export default function HovercraftGame({ difficulty, seed, maxPoints, onComplete
     const got = s.collected.filter(Boolean).length;
     setPhase("done");
     setResult({
-      accuracy: clamp(got / target, 0, 1),
+      accuracy: clamp(got / total, 0, 1),
       detail: got === total
         ? `Perfect sweep: all ${total} dots collected!`
         : `Collected ${got} of ${total} dots.`,
