@@ -527,64 +527,70 @@ input {
   color: var(--muted);
 }
 
-/* Two cells between hairlines, like the Daily / score strip on the main page. */
+/* One-line facts strip, like the inline description above it. */
 .stage-facts {
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin: auto 0 5cqw;
   padding: 0;
+  align-items: center;
   border-top: 1px solid rgba(243, 236, 226, 0.24);
   border-bottom: 1px solid rgba(243, 236, 226, 0.24);
 }
 
 .stage-facts > div {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   padding: 10px 0 11px;
 }
 
 .stage-facts > div + div {
-  padding-left: 14px;
+  justify-content: flex-end;
+  padding-left: 8px;
   border-left: 1px solid rgba(243, 236, 226, 0.24);
 }
 
-.stage-facts dt {
-  color: var(--muted);
-  font-size: 11px;
+.stage-fact-label {
+  flex: 0 0 auto;
+  color: rgba(243, 236, 226, 0.58);
+  font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.02em;
 }
 
-.stage-facts dd {
-  margin: 5px 0 0;
-  min-height: 24px;
+.stage-fact-value {
+  min-width: 0;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   color: #f3ece2;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 700;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
 }
 
-.stage-facts dd.stage-pips {
-  gap: 8px;
+.stage-fact-value.stage-pips {
+  gap: 3px;
 }
 
 .stage-pips em {
   color: #f3ece2;
-  font-size: 16px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 700;
 }
 
 .pips {
   display: inline-flex;
-  gap: 3px;
+  gap: 2px;
 }
 
 .pips b {
-  width: 12px;
-  height: 12px;
+  width: 9px;
+  height: 9px;
   border: 1px solid rgba(243, 236, 226, 0.3);
 }
 
@@ -683,147 +689,173 @@ input {
   pointer-events: none;
 }
 
+.stage .game-prompt strong,
+.stage .stage-copy strong,
+.stage .game-result-detail strong {
+  color: inherit;
+  font-weight: inherit;
+}
+
 .stage .game-prompt strong {
-  color: #fff;
-  font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 
-.prism-cell {
-  fill: rgba(255, 255, 255, 0.025);
-  stroke: rgba(243, 236, 226, 0.22);
-  stroke-width: 0.018;
-  vector-effect: non-scaling-stroke;
+/* Small all-caps readouts drawn on a board (moves, height, width…). */
+.board-hud {
+  fill: rgba(255, 255, 255, 0.55);
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.12em;
+  pointer-events: none;
 }
 
-.prism-grid-border {
+/* A lone button in a button-row takes the full width. */
+.button-row.single {
+  grid-template-columns: 1fr;
+}
+
+/* ---- prismatic ---- */
+.prism-cell {
+  fill: rgba(255, 255, 255, 0.025);
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 1;
+}
+
+.prism-frame {
   fill: none;
-  stroke: rgba(243, 236, 226, 0.62);
+  stroke: rgba(255, 255, 255, 0.5);
   stroke-width: 1.5;
   pointer-events: none;
-  vector-effect: non-scaling-stroke;
+}
+
+.prism-beam,
+.prism-beam-soft {
+  fill: none;
+  stroke: var(--blue);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+  transition: stroke 0.2s;
+}
+
+.prism-beam { stroke-width: 3; }
+
+.prism-beam-soft {
+  stroke-width: 10;
+  opacity: 0.16;
+}
+
+.prism-beam.reached,
+.prism-beam-soft.reached {
+  stroke: var(--good);
 }
 
 .prism-mirror-control {
   cursor: pointer;
   outline: none;
-}
-
-.prism-mirror-control:focus-visible .prism-mirror-tile {
-  stroke: #fff;
-  stroke-width: 2;
-  vector-effect: non-scaling-stroke;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .prism-mirror-tile {
-  fill: rgba(177, 130, 224, 0.12);
-  stroke: rgba(177, 130, 224, 0.42);
-  stroke-width: 0.018;
-  vector-effect: non-scaling-stroke;
+  fill: rgba(255, 255, 255, 0.06);
+  stroke: rgba(255, 255, 255, 0.26);
+  stroke-width: 1;
+  transition: fill 0.15s, stroke 0.15s;
+}
+
+.prism-mirror-control:hover .prism-mirror-tile,
+.prism-mirror-control:focus-visible .prism-mirror-tile {
+  fill: rgba(255, 255, 255, 0.14);
+  stroke: #fff;
 }
 
 .prism-mirror {
-  stroke: #d7b6ff;
-  stroke-width: 0.09;
-  stroke-linecap: round;
-  filter: drop-shadow(0 0 0.04px rgba(215, 182, 255, 0.8));
+  transition: transform 0.22s cubic-bezier(0.3, 0.7, 0.3, 1);
   pointer-events: none;
-  vector-effect: non-scaling-stroke;
 }
 
-.prism-beam {
+.prism-mirror-bar {
+  stroke: #fff;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.prism-miss {
   fill: none;
-  stroke: #8feaff;
+  stroke: var(--danger);
   stroke-width: 2.5;
   stroke-linecap: round;
-  stroke-linejoin: round;
-  filter: drop-shadow(0 0 5px rgba(95, 220, 255, 0.8));
   pointer-events: none;
-  vector-effect: non-scaling-stroke;
-}
-
-.prism-beam.reached {
-  stroke: #b6ff8e;
-  filter: drop-shadow(0 0 6px rgba(150, 255, 110, 0.95));
 }
 
 .prism-source {
-  fill: #8feaff;
-  stroke: #fff;
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
+  fill: #fff;
 }
 
 .prism-target {
-  fill: #101113;
-  stroke: #f3ece2;
+  fill: #000;
+  stroke: rgba(255, 255, 255, 0.7);
   stroke-width: 2;
-  vector-effect: non-scaling-stroke;
+  transition: fill 0.2s, stroke 0.2s;
 }
 
 .prism-target.lit {
-  fill: #b6ff8e;
-  stroke: #fff;
-  filter: drop-shadow(0 0 7px rgba(150, 255, 110, 0.95));
+  fill: var(--good);
+  stroke: var(--good);
 }
 
+/* ---- pillar ---- */
 .pillar-lane {
-  fill: rgba(255, 255, 255, 0.018);
-  stroke: rgba(243, 236, 226, 0.22);
+  fill: rgba(255, 255, 255, 0.025);
+  stroke: rgba(255, 255, 255, 0.14);
   stroke-width: 1;
-  vector-effect: non-scaling-stroke;
+}
+
+.pillar-goal {
+  stroke: rgba(255, 255, 255, 0.45);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 6;
 }
 
 .pillar-ground {
-  stroke: rgba(243, 236, 226, 0.8);
+  stroke: rgba(255, 255, 255, 0.6);
   stroke-width: 2;
-  vector-effect: non-scaling-stroke;
+}
+
+.pillar-guide {
+  stroke: rgba(255, 255, 255, 0.16);
+  stroke-width: 1;
+  stroke-dasharray: 3 5;
 }
 
 .pillar-block {
-  fill: #77a75b;
-  stroke: rgba(243, 236, 226, 0.8);
-  stroke-width: 1.5;
-  vector-effect: non-scaling-stroke;
+  stroke: #000;
+  stroke-width: 1;
 }
 
-.pillar-block.top {
-  fill: #b0bf67;
+.pillar-block.moving { fill: #fff; }
+.pillar-block.failed { fill: var(--danger); }
+
+/* A dead-centre drop flashes white as it locks in. */
+.pillar-block.perfect {
+  animation: pillar-perfect 0.5s ease-out;
 }
 
-.pillar-block.moving {
-  fill: #edc95c;
-  filter: drop-shadow(0 0 5px rgba(237, 201, 92, 0.55));
+@keyframes pillar-perfect {
+  from { fill: #fff; }
 }
 
-.pillar-block.failed {
-  fill: #c8574a;
-  stroke: #ffb0a7;
-}
-
-.pillar-status {
-  position: absolute;
-  z-index: 4;
-  right: 20px;
-  bottom: 76px;
-  left: 20px;
-  margin: 0;
-  color: rgba(243, 236, 226, 0.72);
-  font-size: 11px;
-  text-align: center;
+.pillar-debris {
   pointer-events: none;
 }
 
-.prism-status {
-  position: absolute;
-  z-index: 4;
-  right: 20px;
-  bottom: 76px;
-  left: 20px;
-  margin: 0;
-  color: rgba(243, 236, 226, 0.72);
-  font-size: 11px;
-  text-align: center;
+.pillar-hint {
+  fill: rgba(255, 255, 255, 0.6);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-anchor: middle;
   pointer-events: none;
 }
 

@@ -75,9 +75,9 @@ export const GAME_INFO: Record<GameType, GameInfo> = {
     how: "You fly sideways at a steady speed and bounce off the walls. Tap to hop and grab as many yellow dots as you can before time runs out.",
   },
   prismatic: {
-    how: "Rotate the mirrors to guide a beam through the grid and into the target.",
+    how: "Tap the mirrors to rotate them and guide a beam through the grid into the target. Fewer rotations score higher.",
   },
   pillar: {
-    how: "Drop the sliding row onto the tower. Overhangs are cut away, making each next drop harder.",
+    how: "Drop the sliding row onto the tower. Overhangs are cut away, so land in the center to keep your full width.",
   },
 };

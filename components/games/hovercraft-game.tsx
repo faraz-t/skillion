@@ -11,7 +11,7 @@ const CRAFT_R = 8;
 const DOT_R = 6;
 const GRAVITY = 760;
 const JUMP = 270; // upward speed of a tap, flappy-bird style
-const TIME = 18; // seconds of flying
+const TIME = 16; // seconds of flying
 const COUNTDOWN = 1.65;
 
 type Pulse = { x: number; y: number; t: number };
@@ -30,9 +30,9 @@ type Sim = {
 };
 
 export default function HovercraftGame({ difficulty, seed, maxPoints, onComplete }: GameProps) {
-  const speed = 100 + difficulty * 16;
+  const speed = 125 + difficulty * 18;
   const total = 14 + difficulty * 2;
-  const target = Math.ceil(total * 0.7); // collecting this many counts as a full score
+  const target = Math.ceil(total * 0.75); // collecting this many counts as a full score
 
   const dots = useMemo<Point[]>(() => {
     const rng = makeRng(`${seed}:hover:${difficulty}`);

@@ -38,7 +38,7 @@ export type CellResult = {
 export const TITLE = "Million Grid";
 export const ROW_VALUES = [30000, 35000, 40000, 45000, 50000];
 export const FINALE_VALUE = 100000;
-export const UNLOCK_THRESHOLDS = [0, 100000, 200000, 400000, 550000, 850000];
+export const UNLOCK_THRESHOLDS = [0, 100000, 200000, 400000, 600000, 900000];
 export const SHAPE = 2;
 
 export const GAME_POOL: GameDefinition[] = [
@@ -66,7 +66,7 @@ export const GAME_POOL: GameDefinition[] = [
   { type: "convergence", name: "Convergence" },
   { type: "hovercraft", name: "Hovercraft" },
   { type: "prismatic", name: "Prismatic" },
-  { type: "pillar", name: "PILLAR" },
+  { type: "pillar", name: "Pillar" },
 ];
 
 export const FINALE_GAME: GameDefinition = {

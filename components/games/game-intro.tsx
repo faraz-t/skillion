@@ -69,27 +69,29 @@ export function GameIntro({
           {info.how}
         </p>
 
-        <dl className="stage-facts">
+        <div className="stage-facts">
           <div>
-            <dt>Max Points</dt>
-            <dd>{formatPoints(maxPoints)}</dd>
+            <span className="stage-fact-label">Max Points</span>
+            <span className="stage-fact-value">{formatPoints(maxPoints)}</span>
           </div>
           <div>
-            <dt>{row < 5 ? "Row" : "Stage"}</dt>
             {row < 5 ? (
-              <dd className="stage-pips" aria-label={`Row ${row + 1} of 5`}>
+              <span className="stage-fact-value stage-pips" aria-label={`Row ${row + 1} of 5`}>
                 <span className="pips" aria-hidden="true">
                   {ROW_COLORS.slice(0, 5).map((c, i) => (
                     <b key={c} className={i <= row ? "on" : ""} style={{ "--pip": c } as CSSProperties} />
                   ))}
                 </span>
-                <em>{row + 1}</em>
-              </dd>
+                <em>Row {row + 1}</em>
+              </span>
             ) : (
-              <dd>Finale</dd>
+              <>
+                <span className="stage-fact-label">Stage</span>
+                <span className="stage-fact-value">Finale</span>
+              </>
             )}
           </div>
-        </dl>
+        </div>
 
         <button type="button" className="stage-start" onClick={onStart} aria-label={`Start ${name}`} autoFocus>
           <span>PLAY</span>

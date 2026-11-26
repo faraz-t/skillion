@@ -163,7 +163,6 @@ export default function UnfoldGame({ difficulty, seed, maxPoints, onComplete }: 
     const rng = makeRng(`${seed}:unfold:${difficulty}`);
     const folds = 2;
     const holeCount = [2, 3, 2, 2, 3][difficulty] ?? 2;
-    const diagonals = difficulty >= 3;
 
     const square: Point[] = [
       { x: PAPER.min, y: PAPER.min },
@@ -177,9 +176,12 @@ export default function UnfoldGame({ difficulty, seed, maxPoints, onComplete }: 
     let packet = square;
     for (let i = 0; i < folds; i += 1) {
       let axes = symmetryAxes(packet);
-      if (!diagonals) {
-        const straight = axes.filter((a) => Math.abs(a.n.x) < 0.01 || Math.abs(a.n.y) < 0.01);
-        if (straight.length > 0) axes = straight;
+      const straight = axes.filter((a) => Math.abs(a.n.x) < 0.01 || Math.abs(a.n.y) < 0.01);
+      if (straight.length > 0) axes = straight;
+      if (i > 0) {
+        const previousNormal = sequence[i - 1].line.n;
+        const perpendicular = axes.filter((axis) => Math.abs(dot(axis.n, previousNormal)) < 0.01);
+        if (perpendicular.length > 0) axes = perpendicular;
       }
       const line = axes[Math.floor(rng() * axes.length)];
       const side = rng() < 0.5 ? 1 : -1;
