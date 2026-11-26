@@ -273,7 +273,7 @@ export default function LuckGame({ maxPoints: initial, seed, onComplete }: GameP
             : spinning
               ? "The wheel is spinning…"
               : last
-                ? `${last.number} ${COLOR_NAME[last.color]} · ${last.net >= 0 ? "+" : ""}${formatPoints(last.net)} points`
+                ? `${last.number} ${COLOR_NAME[last.color]} | ${last.net >= 0 ? "+" : ""}${formatPoints(last.net)} points`
                 : "Choose a color to place your first bet."}
         </p>
         <button
